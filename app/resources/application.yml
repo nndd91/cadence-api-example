@@ -1,0 +1,9 @@
+# Config file for the app. Normally you should split the config file into 2,
+# one for the http server and one for the worker as they will both need different
+# configurations. But for simplicity sake in this example, we will just have one
+# common config file.
+env: "development"
+cadence:
+  domain: "simple-domain"
+  service: "cadence-frontend"
+  hostPort: "127.0.0.1:7933"

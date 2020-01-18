@@ -1,0 +1,11 @@
+module simple-cadence-worker
+
+go 1.12
+
+require (
+	github.com/spf13/viper v1.5.0
+	github.com/uber-go/tally v3.3.13+incompatible
+	go.uber.org/cadence v0.10.0
+	go.uber.org/yarpc v1.42.0
+	go.uber.org/zap v1.13.0
+)

@@ -1,0 +1,41 @@
+version: '3'
+services:
+  cassandra:
+    image: cassandra:3.11
+    ports:
+      - "9042:9042"
+    volumes:
+      - ./data/cassandra:/var/lib/cassandra # Link volume to local data directory to prevent data loss
+  statsd:
+    image: hopsoft/graphite-statsd
+    ports:
+      - "8188:80"
+      - "2003:2003"
+      - "8125:8125"
+      - "8126:8126"
+  cadence:
+    image: ubercadence/server:0.10.3-auto-setup # Update this version number if there are new versions release
+    ports:
+      - "7933:7933"
+      - "7934:7934"
+      - "7935:7935"
+      - "7939:7939"
+    environment:
+      - "CASSANDRA_SEEDS=cassandra"
+      - "STATSD_ENDPOINT=statsd:8125"
+      - "DYNAMIC_CONFIG_FILE_PATH=config/dynamicconfig/development.yaml"
+    depends_on:
+      - cassandra
+      - statsd
+  cadence-web:
+    image: ubercadence/web:3.4.1
+    environment:
+      - "CADENCE_TCHANNEL_PEERS=cadence:7933"
+    ports:
+      - "8088:8088"
+    depends_on:
+      - cadence
+networks:
+  default:
+    external:
+      name: default_cluster
