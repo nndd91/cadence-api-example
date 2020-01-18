@@ -6,9 +6,6 @@ httpserver:
 worker:
 	go build -i -o bins/worker app/worker/main.go
 
-test:
-	go clean -testcache & go test ./test/...
-
 bins: httpserver worker
 
 clean:

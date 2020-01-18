@@ -67,7 +67,7 @@ func Workflow(ctx workflow.Context, name string) (string, error) {
 		if ageResult > 0 && ageResult < 150 {
 			logger.Info("Workflow completed.", zap.String("NameResult", activityResult), zap.Int("AgeResult", ageResult))
 
-			return fmt.Sprintf("Hello"+name+"! You are %v years old!", ageResult), nil
+			return fmt.Sprintf("Hello "+name+"! You are %v years old!", ageResult), nil
 		} else {
 			return "You can't be that old!", nil
 		}
