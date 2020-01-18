@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
-	"strings"
 )
 
 type CadenceConfig struct {
@@ -23,10 +22,8 @@ type AppConfig struct {
 // Setup setup the config for the code run
 func (h *AppConfig) Setup() {
 	viper.SetConfigName("application")
-	viper.AddConfigPath("app/resources")
-	replacer := strings.NewReplacer(".", "_", "-", "_")
-	viper.SetEnvKeyReplacer(replacer)
-	viper.AutomaticEnv()
+	viper.AddConfigPath("app/resources") // These two lines will make sure viper pulls the config from app/resources/application.yml
+	viper.AutomaticEnv()                 // This allows viper to read variables from the environment variables if they exists.
 	viper.SetConfigType("yml")
 	if err := viper.ReadInConfig(); err != nil {
 		fmt.Printf("Error reading config file, %s", err)
@@ -43,5 +40,5 @@ func (h *AppConfig) Setup() {
 	}
 	h.Logger = logger
 
-	logger.Debug("Finished loading Configuration: ", zap.Any("Config:", h))
+	logger.Debug("Finished loading Configuration!")
 }

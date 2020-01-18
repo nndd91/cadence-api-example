@@ -2,7 +2,6 @@ package workflows
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"go.uber.org/cadence/activity"
 	"go.uber.org/cadence/workflow"
@@ -23,7 +22,6 @@ const SignalName = "helloWorldSignal"
 func init() {
 	workflow.Register(Workflow)
 	activity.Register(helloworldActivity)
-	workflow.Register(waitForAgeResponse)
 }
 
 var activityOptions = workflow.ActivityOptions{
@@ -38,12 +36,21 @@ func helloworldActivity(ctx context.Context, name string) (string, error) {
 	return "Hello " + name + "! How old are you!", nil
 }
 
-func waitForAgeResponse(ctx workflow.Context) (string, error) {
+func Workflow(ctx workflow.Context, name string) (string, error) {
+	ctx = workflow.WithActivityOptions(ctx, activityOptions)
+
+	logger := workflow.GetLogger(ctx)
+	logger.Info("helloworld workflow started")
+	var activityResult string
+	err := workflow.ExecuteActivity(ctx, helloworldActivity, name).Get(ctx, &activityResult)
+	if err != nil {
+		logger.Error("Activity failed.", zap.Error(err))
+		return "", err
+	}
+
+	// After saying hello, the workflow will wait for you to inform it of your age!
 	signalName := SignalName
-
 	selector := workflow.NewSelector(ctx)
-
-	// First Selector to receive Signal
 	var ageResult int
 
 	for {
@@ -56,38 +63,13 @@ func waitForAgeResponse(ctx workflow.Context) (string, error) {
 		// Wait for signal
 		selector.Select(ctx)
 
-		// Exception Handler for if signal received is invalid!
-		if ageResult > 0 {
-			if ageResult < 150 {
-				return fmt.Sprintf("%v years old", ageResult), nil
-			} else {
-				fmt.Println("You can't be that old!", zap.Int("Signal", ageResult))
+		// We can check the age and return an appropriate response
+		if ageResult > 0 && ageResult < 150 {
+			logger.Info("Workflow completed.", zap.String("NameResult", activityResult), zap.Int("AgeResult", ageResult))
 
-				return "", errors.New("invalid age")
-			}
+			return fmt.Sprintf("Hello"+name+"! You are %v years old!", ageResult), nil
+		} else {
+			return "You can't be that old!", nil
 		}
 	}
-}
-
-func Workflow(ctx workflow.Context, name string) error {
-	ctx = workflow.WithActivityOptions(ctx, activityOptions)
-
-	logger := workflow.GetLogger(ctx)
-	logger.Info("helloworld workflow started")
-	var activityResult string
-	err := workflow.ExecuteActivity(ctx, helloworldActivity, name).Get(ctx, &activityResult)
-	if err != nil {
-		logger.Error("Activity failed.", zap.Error(err))
-		return err
-	}
-
-	var ageResult string
-	err = workflow.ExecuteChildWorkflow(ctx, waitForAgeResponse).Get(ctx, &ageResult)
-	if err != nil {
-		logger.Error("Childworkflow failed.", zap.Error(err))
-		return err
-	}
-	logger.Info("Workflow completed.", zap.String("NameResult", activityResult), zap.String("AgeResult", ageResult))
-
-	return nil
 }
