@@ -8,7 +8,7 @@
 
 ## Worker and API Server
 
-Navigate back to the project root folder. Make sure go is installed in system and install dependencies with `go mod vendor`
+Navigate back to the project root folder. Make sure go is installed in system.
 
 * HttpServer
     1. `make httpserver`
@@ -21,9 +21,10 @@ Navigate back to the project root folder. Make sure go is installed in system an
 ## Endpoints
 
 1. To start workflow
-   * POST request to `http://localhost:3030/api/start-hello-world` 
+   * POST request to `http://localhost:3030/api/start-hello-world`
+   * Note down the workflow id so you can use it to signal 
 
 2. To signal workflow
-    * Check Cadence UI for the WorkflowID of the child workflow
+    * Copy the workflow id from the previous response or check Cadence UI for the WorkflowID
     * POST Request to `http://localhost:3030/api/signal-hello-world?workflowId=<workflowId>&age=25`
     * Make sure to replace <workflowId> with the id retrieved from cadence web ui
