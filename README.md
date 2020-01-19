@@ -1,4 +1,6 @@
 # Readme
+The full source code for the article [Building your first Cadence Workflow](https://medium.com/stashaway-engineering/building-your-first-cadence-workflow-e61a0b29785). 
+Check out the article for a detailed walk-through of this repository.
 
 ## Running the Server
 
