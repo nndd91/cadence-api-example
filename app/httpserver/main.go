@@ -3,13 +3,13 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"github.com/nndd91/cadence-api-example/app/adapters/cadenceAdapter"
+	"github.com/nndd91/cadence-api-example/app/config"
+	"github.com/nndd91/cadence-api-example/app/worker/workflows"
 	"go.uber.org/cadence/client"
 	"go.uber.org/zap"
 	"log"
 	"net/http"
-	"simple-cadence-worker/app/adapters/cadenceAdapter"
-	"simple-cadence-worker/app/config"
-	"simple-cadence-worker/app/worker/workflows"
 	"strconv"
 	"time"
 )

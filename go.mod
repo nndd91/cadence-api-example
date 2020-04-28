@@ -1,6 +1,6 @@
-module simple-cadence-worker
+module github.com/nndd91/cadence-api-example
 
-go 1.12
+go 1.13
 
 require (
 	github.com/spf13/viper v1.5.0

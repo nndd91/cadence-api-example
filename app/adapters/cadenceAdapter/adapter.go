@@ -2,13 +2,13 @@ package cadenceAdapter
 
 import (
 	"context"
+	"github.com/nndd91/cadence-api-example/app/config"
 	"github.com/uber-go/tally"
 	"go.uber.org/cadence/.gen/go/cadence/workflowserviceclient"
 	"go.uber.org/cadence/client"
 	"go.uber.org/cadence/encoded"
 	"go.uber.org/cadence/workflow"
 	"go.uber.org/zap"
-	"simple-cadence-worker/app/config"
 )
 
 type (

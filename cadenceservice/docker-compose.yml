@@ -14,7 +14,7 @@ services:
       - "8125:8125"
       - "8126:8126"
   cadence:
-    image: ubercadence/server:0.10.3-auto-setup # Update this version number if there are new versions release
+    image: ubercadence/server:0.11.0-auto-setup # Update this version number if there are new versions release
     ports:
       - "7933:7933"
       - "7934:7934"
@@ -28,7 +28,7 @@ services:
       - cassandra
       - statsd
   cadence-web:
-    image: ubercadence/web:3.4.1
+    image: ubercadence/web:3.9.0
     environment:
       - "CADENCE_TCHANNEL_PEERS=cadence:7933"
     ports:

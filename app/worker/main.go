@@ -2,11 +2,11 @@ package main
 
 import (
 	"fmt"
+	"github.com/nndd91/cadence-api-example/app/adapters/cadenceAdapter"
+	"github.com/nndd91/cadence-api-example/app/config"
+	"github.com/nndd91/cadence-api-example/app/worker/workflows"
 	"go.uber.org/cadence/worker"
 	"go.uber.org/zap"
-	"simple-cadence-worker/app/adapters/cadenceAdapter"
-	"simple-cadence-worker/app/config"
-	"simple-cadence-worker/app/worker/workflows"
 )
 
 func startWorkers(h *cadenceAdapter.CadenceAdapter, taskList string) {
